@@ -52,7 +52,14 @@ jobs:
         tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
         build_args: ENVS_PRESET=${{ inputs.envs_preset }}
     secrets: inherit
-
+publish_image:
+    name: Publish Docker image
+    needs: make_slug
+    uses: './.github/workflows/publish-image.yml'
+    with:
+        tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+        build_args: ENVS_PRESET=${{ inputs.envs_preset }}
+    secrets: inherit
   deploy_review:
     name: Deploy frontend
     needs: [ make_slug, publish_image ]
